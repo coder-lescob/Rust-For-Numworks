@@ -5,7 +5,7 @@ edition = "2024"
 build = "build/build.rs"
 
 [[bin]]
-name = "SampleApp"
+name = "RustApp"
 path = "src/main.rs"
 test = false
 doctest = false
@@ -17,7 +17,7 @@ test = false
 doctest = false
 bench = false
 crate-type = ["cdylib"]
-name = "sample_app"
+name = "rust_app"
 
 [features]
 default = ["upsilon"]

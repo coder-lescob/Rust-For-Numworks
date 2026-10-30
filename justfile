@@ -1,5 +1,5 @@
-app_name := "SampleApp"
-lib_file_name := "libsample_app"
+app_name := "RustApp"
+lib_file_name := "librust_app"
 
 icon_file := "assets/icon.png"
 
