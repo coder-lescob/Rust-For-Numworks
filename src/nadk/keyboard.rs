@@ -168,7 +168,7 @@ impl Key {
 
 /// Represent the state of the keyboard when `scan()` is called.
 #[derive(Clone, Copy, Debug)]
-pub struct KeyboardState(u64);
+pub struct KeyboardState(pub u64);
 
 impl KeyboardState {
     /// Scan the keyboard.

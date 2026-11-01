@@ -3,8 +3,8 @@
 version = 4
 
 [[package]]
-name = "Rust-epsilon-dev-template"
-version = "0.1.0"
+name = "Rust-code"
+version = "0.0.1"
 dependencies = [
  "cc",
  "cortex-m",

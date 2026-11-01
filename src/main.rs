@@ -4,13 +4,18 @@
 #[macro_use]
 mod nadk;
 
-use crate::nadk::display::{Color565, SCREEN_RECT, ScreenPoint, draw_string, push_rect_uniform};
-use crate::nadk::keyboard::{Key, wait_until_pressed};
-use crate::nadk::storage::{CalculatorModel, get_calculator_model};
+#[macro_use]
+mod text_editor;
+
+use crate::nadk::display::Color565;
+use crate::nadk::keyboard::{Key, InputManager};
 use crate::nadk::utils::wait_ok_released;
+use crate::nadk::time;
+
+use crate::text_editor::editor::{Editor, ColorPalette};
 
 // The app name must be a C string and the app name size must include the end line NULL character
-configure_app!(b"SampleApp\0", 10, "../target/icon.nwi", 745);
+configure_app!(b"Rust Code\0", 10, "../target/icon.nwi", 4250);
 
 // Setup the heap allocator
 setup_allocator!();
@@ -20,16 +25,31 @@ fn main() {
     // You must call setup_allocator!() before
     init_heap!();
     wait_ok_released();
+    
+    // default palette
+    let palette = ColorPalette { 
+        background: Color565::from_rgb888(0x2d,0x35,0x3b),
+        separator : Color565::from_rgb888(0x4f, 0x58, 0x5e),
+        text_color: Color565::from_rgb888(0xc0, 0xb6, 0x9e),
+    };
 
-    // Your code here
+    let mut editor = Editor::from_content("file.rs", "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nhello, I'm rust\nA slick modern language\nI am very good for low level tasks\nBut my borrow checker is\nsometimes annoying", palette);
+     
+    let mut input_manager = InputManager::new();
+    
+    let mut old_time = time::get_current_time_millis();
+    let mut dt = 0;
 
-    push_rect_uniform(SCREEN_RECT, Color565::from_rgb888(255, 255, 255));
-    draw_string(
-        "Hello from Rust coding App",
-        ScreenPoint::new(20, 20),
-        true,
-        Color565::from_rgb888(0, 0, 0),
-        Color565::new(255, 255, 255),
-    );
-    wait_until_pressed(Key::Ok);
+    loop {
+        input_manager.scan();
+        if input_manager.is_keydown(Key::Home) {
+            break;
+        }
+        
+        editor.update(dt as u32);
+
+        let new_time = time::get_current_time_millis();
+        dt = new_time - old_time;
+        old_time = new_time;
+    }
 }
